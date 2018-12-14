@@ -2,7 +2,7 @@
 
 自定义镜像：
 
-* [Docker hub => php-xdebug](https://hub.docker.com/r/zfming/php-xdebug/)
+* [Docker hub => php-xdebug](https://hub.docker.com/r/ahaschool/php-xdebug/)
 * [Docker hub => dnsmasq](https://hub.docker.com/r/zfming/dnsmasq/)
 
 里面已经包含了平常开发所需的基本php扩展，比如gd,pdo_mysql等。
@@ -24,12 +24,12 @@
 * 获取代码，运行docker-compose：
 
 ```bash
-git clone git@github.com:zfuming/docker-php-dev.git
+git clone git@github.com:ahaschool/docker-php-dev.git
 cd run/
 docker-compose up -d
 ```
 
-* 添加网卡别名
+* 添加网卡别名(区分本地回环地址127.0.0.1)
 
 ```bash
 sudo -S ifconfig en0 alias 10.254.254.254 255.255.255.0
@@ -41,7 +41,7 @@ sudo -S ifconfig en0 alias 10.254.254.254 255.255.255.0
  + IDEA 或者 phpstorm
  + Docker for mac
 
-* docker 容器中的配置
+* docker 容器中的配置（本镜像已安装）
 
 ```bash
 docker exec -it <容器ID> bash

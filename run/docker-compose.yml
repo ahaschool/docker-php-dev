@@ -1,31 +1,21 @@
 version: '2'
 services:
-  dns_server:
-    image: "zfming/dnsmasq:latest"
-    ports:
-      - "53:53/tcp"
-      - "53:53/udp"
-    cap_add:
-      - NET_ADMIN
-    volumes:
-      - ./etc/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
-      - ./etc/dnsmasq/dnsmasq.d:/etc/dnsmasq.d
   nginx:
-    image: "nginx:alpine"
+    image: "ahaschool/nginx:latest"
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ../app/web:/app/web
-      - ./etc/nginx:/etc/nginx
+      - ./etc/nginx/conf.d:/etc/nginx/conf.d
       - ./etc/localtime:/etc/localtime
     network_mode: "bridge"
     links:
-      - php_fpm:php-fpm
+      - php-xdebug:php-xdebug
     depends_on:
-      - php_fpm
-  php_fpm:
-    image: "zfming/php-xdebug:latest"
+      - php-xdebug
+  php-xdebug:
+    image: "ahaschool/php-xdebug:latest"
     volumes:
       - ../app/web:/app/web
       - ./etc/localtime:/etc/localtime
@@ -34,31 +24,15 @@ services:
     depends_on:
       - redis
       - mysql
-      - memcached
     links:
-      - redis:redis
-      - mysql:mysql
-      - memcached:memcached
-  mq:
-    image: "rabbitmq:3.6-management"
-    hostname: "my_rabbit"
-    ports:
-      - "15671:15671"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: "zfm"
-      RABBITMQ_DEFAULT_PASS: "123456"
-      RABBITMQ_DEFAULT_VHOST: "my_vhost"
-  memcached:
-    image: "memcached:latest"
-    network_mode: "bridge"
-    mem_limit: 128M
-    command: memcached -m 128M
+      - redis:localredis
+      - mysql:localmysql
   redis:
-    image: "redis:4"
+    image: "ahaschool/redis:latest"
     ports:
       - "6379:6379"
     volumes:
+      - ./etc/php-fpm:/usr/local/etc
       - ./etc/redis/redis.conf:/usr/local/etc/redis/redis.conf
     network_mode: "bridge"
     command: "redis-server /usr/local/etc/redis/redis.conf"
@@ -75,8 +49,3 @@ services:
       TZ: 'Asia/Shanghai'
       MYSQL_ROOT_PASSWORD: root
       MYSQL_ROOT_HOST: "%"
-  couchdb:
-    image: "klaemo/couchdb:2.0.0"
-    ports:
-      - "5984:5984"
-    network_mode: "bridge"
