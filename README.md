@@ -3,6 +3,8 @@
 自定义镜像：
 
 * [Docker hub => php-xdebug](https://hub.docker.com/r/ahaschool/php-xdebug/)
+* [Docker hub => nginx](https://hub.docker.com/r/ahaschool/nginx/)
+* [Docker hub => redis](https://hub.docker.com/r/ahaschool/redis/)
 * [Docker hub => dnsmasq](https://hub.docker.com/r/zfming/dnsmasq/)
 
 里面已经包含了平常开发所需的基本php扩展，比如gd,pdo_mysql等。
